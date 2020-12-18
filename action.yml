@@ -46,5 +46,6 @@ runs:
       run: ${{ github.action_path }}/scripts/release.sh ${{inputs.DOMAIN}} ${{inputs.DOMAIN_OWNER}} ${{inputs.REPOSITORY}} ${{inputs.S3_BUCKET_NAME}} ${{inputs.AWS_ACCESS_KEY_ID}} ${{inputs.AWS_SECRET_ACCESS_KEY}} ${{inputs.build_file_path}} $GITHUB_RUN_ID $GITHUB_RUN_NUMBER
       shell: bash
 
-    - run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c FALSE
+    - id: 'clean-conda-env'
+      run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c FALSE
       shell: bash

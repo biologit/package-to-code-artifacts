@@ -25,7 +25,13 @@ if [ "$CREATE" == "TRUE" ];
 then
     echo "Creating build $buildName env"
     conda create -n $buildName python=3.7
-    echo "::set-output name=buildName::$(echo $buildName)"
+
+    ## Install aws dependencies
+    pip install awscli
+    pip install boto3
+
+    echo "::set-output name=build-name::$(echo $buildName)"
+
 else
     echo "Removing build $buildName env"
     conda env remove -n $buildName
