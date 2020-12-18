@@ -34,10 +34,6 @@ runs:
   using: "composite"
   steps:
 
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
     - run: git update-index --chmod=+x ${{ github.action_path }}/scripts/*
       shell: bash
 
