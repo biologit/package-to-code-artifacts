@@ -1,0 +1,50 @@
+name: 'aws code artifcats'
+description: 'build & upload package to aws code artifact'
+
+inputs:
+  aws_access_key:  
+    description: 'aws IAM aws_access_key'
+    required: true
+  aws IAM aws_access_key: 
+    description: 'aws IAM aws_access_key'
+    required: true
+  aws_region: 
+    description: 'aws region'
+    required: true
+    default: 'us-east-1'
+  aws_codeartifact_domain:
+    description: 'aws code artifcats login credentials'
+    required: true
+  aws_codeartifact_domain_owner:
+    description: 'aws code artifcats login credentials'
+    required: true
+  aws_codeartifact_repository:
+    description: 'aws code artifcats login credentials'
+    required: true
+  build_file_path:
+    description: 'build file path *.tar.gz'
+    deafult: "dist/*.tar.gz"
+
+outputs:
+  random-number: 
+    description: "conda env build name"
+    value: ${{ steps.setup-conda-env.outputs.build-name }}
+
+runs:
+  using: "composite"
+  steps:
+
+    - id: 'setup-conda-env'
+      run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c TRUE
+      shell: bash
+
+    - id: 'build-package'
+      run: ${{ github.action_path }}/scripts/build.sh $GITHUB_RUN_ID $GITHUB_RUN_NUMBER
+      shell: bash
+
+    - id: 'release-code-artifact'
+      run: ${{ github.action_path }}/scripts/release.sh ${{inputs.DOMAIN}} ${{inputs.DOMAIN_OWNER}} ${{inputs.REPOSITORY}} ${{inputs.S3_BUCKET_NAME}} ${{inputs.AWS_ACCESS_KEY_ID}} ${{inputs.AWS_SECRET_ACCESS_KEY}} ${{inputs.build_file_path}} $GITHUB_RUN_ID $GITHUB_RUN_NUMBER
+      shell: bash
+
+    - run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c FALSE
+      shell: bash
