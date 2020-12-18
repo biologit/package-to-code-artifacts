@@ -21,13 +21,8 @@ buildName=$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
 conda activate $buildName
 echo Activated release env $buildName
 
-# Configure pip to work with AWS Code Artifcats
+# Configure twine to work with AWS Code Artifcats
 aws codeartifact login --tool twine --domain $domain --domain-owner $domain_owner --repository $repository --region us-east-1
-aws codeartifact login --tool pip --domain $domain --domain-owner $domain_owner --repository $repository --region us-east-1
-
-# Install required dependencies for Python script.
-pip install -e .[release]
-python setup.py sdist bdist_wheel
 
 # Upload built package
 twine upload --repository codeartifact $local_path
