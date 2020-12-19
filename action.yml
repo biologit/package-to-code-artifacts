@@ -3,13 +3,13 @@ description: 'build & upload package to aws code artifact'
 
 inputs:
   aws_codeartifact_domain:
-    description: 'aws code artifcats login credentials'
+    description: 'aws code artifcats config credentials'
     required: true
   aws_codeartifact_domain_owner:
-    description: 'aws code artifcats login credentials'
+    description: 'aws code artifcats config credentials'
     required: true
   aws_codeartifact_repository:
-    description: 'aws code artifcats login credentials'
+    description: 'aws code artifcats config credentials'
     required: true
   build_file_path:
     description: 'build file path *.tar.gz'
@@ -24,4 +24,3 @@ runs:
       run: |
         chmod +x ${{ github.action_path }}/scripts/release.sh
         ${{ github.action_path }}//scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.build_file_path}}
-      post: echo "Running Post Step"
