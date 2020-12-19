@@ -24,3 +24,5 @@ runs:
       run: |
         chmod +x ${{ github.action_path }}/scripts/release.sh
         ${{ github.action_path }}//scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.build_file_path}}
+      post: echo "Running Post Step"
+      post-if: 'runner.os == linux'
