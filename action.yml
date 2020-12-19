@@ -4,7 +4,6 @@ description: 'build & upload package to aws code artifact'
 inputs:
   aws_region: 
     description: 'aws region'
-    required: true
     default: 'us-east-1'
   aws_codeartifact_domain:
     description: 'aws code artifcats login credentials'
@@ -19,18 +18,12 @@ inputs:
     description: 'build file path *.tar.gz'
     deafult: "dist/*.tar.gz"
 
-outputs:
-  build-name: 
-    description: "conda env build name"
-    value: ${{ steps.setup-conda-env.outputs.build-name }}
-
 runs:
   using: "composite"
   steps:
-
+    
     - id: 'release-code-artifact'
       shell: bash
       run: |
         chmod +x ${{ github.action_path }}/scripts/release.sh
         ${{ github.action_path }}//scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.build_file_path}}
-      
