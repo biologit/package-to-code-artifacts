@@ -29,3 +29,4 @@ runs:
 
     - id:  'package-to-code-artifacts'
       run: twine upload --repository codeartifact ${{inputs.build_file_path}}
+      shell: bash
