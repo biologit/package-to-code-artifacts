@@ -2,12 +2,6 @@ name: 'aws code artifcats'
 description: 'build & upload package to aws code artifact'
 
 inputs:
-  aws_access_key:  
-    description: 'aws IAM aws_access_key'
-    required: true
-  aws_secret_access_key: 
-    description: 'aws IAM aws_secret_access_key'
-    required: true
   aws_region: 
     description: 'aws region'
     required: true
@@ -37,18 +31,6 @@ runs:
     - run: git update-index --chmod=+x ${{ github.action_path }}/scripts/*
       shell: bash
 
-    - id: 'setup-conda-env'
-      run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c TRUE
-      shell: bash
-
-    - id: 'build-package'
-      run: ${{ github.action_path }}/scripts/build.sh $GITHUB_RUN_ID $GITHUB_RUN_NUMBER
-      shell: bash
-
     - id: 'release-code-artifact'
-      run: ${{ github.action_path }}/scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.aws_access_key}} ${{inputs.aws_secret_access_key}} ${{inputs.build_file_path}} $GITHUB_RUN_ID $GITHUB_RUN_NUMBER
-      shell: bash
-
-    - id: 'clean-conda-env'
-      run: ${{ github.action_path }}/scripts/env.sh -r $GITHUB_RUN_ID -rn $GITHUB_RUN_NUMBER -c FALSE
+      run: ${{ github.action_path }}/scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.build_file_path}} ${{inputs.aws_region}}
       shell: bash
