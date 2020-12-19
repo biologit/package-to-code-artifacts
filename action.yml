@@ -2,9 +2,6 @@ name: 'aws code artifcats'
 description: 'build & upload package to aws code artifact'
 
 inputs:
-  aws_region: 
-    description: 'aws region'
-    default: 'us-east-1'
   aws_codeartifact_domain:
     description: 'aws code artifcats login credentials'
     required: true
