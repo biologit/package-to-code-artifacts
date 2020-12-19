@@ -19,14 +19,18 @@ inputs:
     description: 'build file path *.tar.gz'
     deafult: "dist/*.tar.gz"
 
+outputs:
+  build-name: 
+    description: "conda env build name"
+    value: ${{ steps.setup-conda-env.outputs.build-name }}
+
 runs:
   using: "composite"
   steps:
 
-    - id: 'configure-twine'
-      run: aws codeartifact login --tool twine --domain ${{inputs.aws_codeartifact_domain}} --domain-owner ${{inputs.aws_codeartifact_domain_owner}} --repository ${{inputs.aws_codeartifact_repository}} --region ${{inputs.aws_region}}
+    - id: 'release-code-artifact'
       shell: bash
-
-    - id:  'package-to-code-artifacts'
-      run: twine upload --repository codeartifact ${{inputs.build_file_path}}
-      shell: bash
+      run: |
+        chmod +x /scripts/release.sh
+        /scripts/release.sh ${{inputs.aws_codeartifact_domain}} ${{inputs.aws_codeartifact_domain_owner}} ${{inputs.aws_codeartifact_repository}} ${{inputs.build_file_path}}
+      
